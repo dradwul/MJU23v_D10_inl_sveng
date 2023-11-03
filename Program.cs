@@ -27,8 +27,22 @@ namespace MJU23v_D10_inl_sveng
                     if (gloss.word_eng == translateWord)
                         Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
                 }
+            }         
+        }
+        static string LoadFile(string fileToLoad)
+        {
+            using (StreamReader sr = new StreamReader(fileToLoad))
+            {
+                dictionary = new List<SweEngGloss>(); // Empty it!
+                string line = sr.ReadLine();
+                while (line != null)
+                {
+                    SweEngGloss gloss = new SweEngGloss(line);
+                    dictionary.Add(gloss);
+                    line = sr.ReadLine();
+                }
             }
-            
+            return "File loaded";
         }
         public static void PrintHelp()
         {
@@ -64,31 +78,14 @@ namespace MJU23v_D10_inl_sveng
                 {
                     if (argument.Length == 2)
                     {
-                        using (StreamReader sr = new StreamReader(argument[1]))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
+                        string directory = "..\\..\\..\\dict\\";
+                        string fileToLoad = ($"{directory}{argument[1]}");
+                        LoadFile(fileToLoad);
                     }
                     else if (argument.Length == 1)
                     {
-                        using (StreamReader sr = new StreamReader(defaultFile))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
+                        string fileToLoad = defaultFile;
+                        LoadFile(fileToLoad);
                     }
                 }
                 else if (command == "list") //TODO: Kolla så att denna fungerar efter initialisering av listan
