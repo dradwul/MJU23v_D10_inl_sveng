@@ -88,12 +88,13 @@ namespace MJU23v_D10_inl_sveng
                         LoadFile(fileToLoad);
                     }
                 }
-                else if (command == "list") //TODO: Kolla så att denna fungerar efter initialisering av listan
+                else if (command == "list")
                 {
                     foreach (SweEngGloss gloss in dictionary)
                     {
                         Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
                     }
+                    //TODO: Felmeddelande om ingen lista finns laddad
                 }
                 else if (command == "new")
                 {
@@ -141,7 +142,6 @@ namespace MJU23v_D10_inl_sveng
                     }
                 }
                 else if (command == "translate") 
-                    //TODO: Kontrollera så funktion fungerar när listan är initialiserad
                     //FIXME: Felhantering vid ogiltig input. T.ex. ord som inte finns
                 {
                     if (argument.Length == 2)
