@@ -20,17 +20,31 @@ namespace MJU23v_D10_inl_sveng
 
             public static void Translation(string translateWord)
             {
+
+                bool foundTranslation = false;
+
                 foreach (SweEngGloss gloss in dictionary)
                 {
                     if (gloss.word_swe == translateWord)
+                    {
                         Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                        foundTranslation = true;
+                    }
                     if (gloss.word_eng == translateWord)
+                    {
                         Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                        foundTranslation = true;
+                    }
+                }
+                if (!foundTranslation)
+                {
+                    throw new KeyNotFoundException("Translation not found for this word");
                 }
             }         
         }
         static string LoadFile(string fileToLoad)
         {
+            //FIXME: Felhantering vid ogiltig sökväg
             using (StreamReader sr = new StreamReader(fileToLoad))
             {
                 dictionary = new List<SweEngGloss>(); // Empty it!
@@ -115,6 +129,7 @@ namespace MJU23v_D10_inl_sveng
                 else if (command == "delete") 
                 {
                     //FIXME: Felhantering om man försöker ta bort ord som inte finns 
+                    //TODO: En else if som tar två ord för att bara skriva 'delete {svenskt/engelskt ord}'
                     if (argument.Length == 3)
                     {
                         int index = -1;
@@ -146,14 +161,28 @@ namespace MJU23v_D10_inl_sveng
                 {
                     if (argument.Length == 2)
                     {
-                        string userInputToTranslate = argument[1];
-                        SweEngGloss.Translation(userInputToTranslate);
+                        try
+                        {
+                            string userInputToTranslate = argument[1];
+                            SweEngGloss.Translation(userInputToTranslate);
+                        }
+                        catch (KeyNotFoundException ex)
+                        {
+                            Console.WriteLine("Error: " + ex.Message);
+                        }
                     }
                     else if (argument.Length == 1)
                     {
-                        Console.WriteLine("Write word to be translated: ");
-                        string userInputToTranslate = Console.ReadLine();
-                        SweEngGloss.Translation(userInputToTranslate);
+                        try
+                        {
+                            Console.WriteLine("Write word to be translated: ");
+                            string userInputToTranslate = Console.ReadLine();
+                            SweEngGloss.Translation(userInputToTranslate);
+                        }
+                        catch(KeyNotFoundException ex)
+                        {
+                            Console.WriteLine("Error: " + ex.Message);
+                        }
                     }
                 }
                 else if (command == "help")
