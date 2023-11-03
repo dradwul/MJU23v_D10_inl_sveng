@@ -15,12 +15,26 @@
                 string[] words = line.Split('|');
                 this.word_swe = words[0]; this.word_eng = words[1];
             }
+            
+        }
+        public static void PrintHelp()
+        {
+            Console.WriteLine("Available commands:");
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("'help'       -  hjälp");
+            Console.WriteLine("'load'       -  ladda");
+            Console.WriteLine("'list'       -  lista");
+            Console.WriteLine("'translate'  -  översätt");
+            Console.WriteLine("'add'        -  lägg till ord");
+            Console.WriteLine("'delete'     -  ta bort ord");
+            Console.WriteLine("'quit'       -  avsluta");
+            Console.WriteLine("------------------------------");
         }
         static void Main(string[] args)
         {
             string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
-            //TODO: Visa tydligt vid uppstart vilka kommandon som finns 
+            PrintHelp();
             do
             {
                 Console.Write("> ");
@@ -145,16 +159,7 @@
                 }
                 else if (command == "help")
                 {
-                    Console.WriteLine("Available commands:");
-                    Console.WriteLine("------------------------------");
-                    Console.WriteLine("'help'       -  hjälp");
-                    Console.WriteLine("'load'       -  ladda");
-                    Console.WriteLine("'list'       -  lista");
-                    Console.WriteLine("'translate'  -  översätt");
-                    Console.WriteLine("'add'        -  lägg till ord");
-                    Console.WriteLine("'delete'     -  ta bort ord");
-                    Console.WriteLine("'quit'       -  avsluta");
-                    Console.WriteLine("------------------------------");
+                    PrintHelp();
                 }
                 else
                 {
