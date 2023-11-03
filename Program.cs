@@ -1,4 +1,6 @@
-﻿namespace MJU23v_D10_inl_sveng
+﻿using static System.Reflection.Metadata.BlobBuilder;
+
+namespace MJU23v_D10_inl_sveng
 {
     internal class Program
     {
@@ -14,6 +16,17 @@
             {
                 string[] words = line.Split('|');
                 this.word_swe = words[0]; this.word_eng = words[1];
+            }
+
+            public static void Translation(string translateWord)
+            {
+                foreach (SweEngGloss gloss in dictionary)
+                {
+                    if (gloss.word_swe == translateWord)
+                        Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                    if (gloss.word_eng == translateWord)
+                        Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                }
             }
             
         }
@@ -136,25 +149,14 @@
                 {
                     if (argument.Length == 2)
                     {
-                        foreach (SweEngGloss gloss in dictionary)
-                        {
-                            if (gloss.word_swe == argument[1])
-                                Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                            if (gloss.word_eng == argument[1])
-                                Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                        }
+                        string userInputToTranslate = argument[1];
+                        SweEngGloss.Translation(userInputToTranslate);
                     }
                     else if (argument.Length == 1)
                     {
                         Console.WriteLine("Write word to be translated: ");
                         string userInputToTranslate = Console.ReadLine();
-                        foreach (SweEngGloss gloss in dictionary)
-                        {
-                            if (gloss.word_swe == userInputToTranslate)
-                                Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                            if (gloss.word_eng == userInputToTranslate)
-                                Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                        }
+                        SweEngGloss.Translation(userInputToTranslate);
                     }
                 }
                 else if (command == "help")
