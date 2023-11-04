@@ -87,6 +87,28 @@ namespace MJU23v_D10_inl_sveng
             }
             return false; //Returnering om ordet inte finns
         }
+        private static void RemoveWordFromList(string sweWordToDelete, string engWordToDelete)
+        {
+            int index = -1;
+            for(int i = 0; i < dictionary.Count; i++)
+            {
+                SweEngGloss gloss = dictionary[i];
+                if (gloss.word_swe == sweWordToDelete && gloss.word_eng == engWordToDelete)
+                {
+                    index = i;
+                    break;//Avbryter loop om ord hittas
+                }
+            }
+            if (index >= 0)
+            {
+                dictionary.RemoveAt(index);
+                Console.WriteLine($"{sweWordToDelete}/{engWordToDelete} removed from the list");
+            }
+            else
+            {
+                Console.WriteLine("Word not found in the list");
+            }
+        }
         public static void PrintHelp()
         {
             Console.WriteLine("Available commands:");
@@ -186,22 +208,7 @@ namespace MJU23v_D10_inl_sveng
                         string sweWordToDelete = argument[1];
                         string engWordToDelete = argument[2];
 
-                        if (IsWordAlreadyInList(sweWordToDelete, engWordToDelete))
-                        {
-                            int index = -1;
-                            for (int i = 0; i < dictionary.Count; i++)
-                            {
-                                SweEngGloss gloss = dictionary[i];
-                                if (gloss.word_swe == sweWordToDelete && gloss.word_eng == engWordToDelete)
-                                    index = i;
-                            }
-                            dictionary.RemoveAt(index);
-                            Console.WriteLine($"{sweWordToDelete}/{engWordToDelete} removed from the list");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Word not found in the list");
-                        }
+                        RemoveWordFromList(sweWordToDelete, engWordToDelete);
                     }
                     else if (argument.Length == 1)
                     {
@@ -210,22 +217,7 @@ namespace MJU23v_D10_inl_sveng
                         Console.Write("Write word in English: ");
                         string engWordToDelete = Console.ReadLine();
 
-                        if (IsWordAlreadyInList(sweWordToDelete, engWordToDelete))
-                        {
-                            int index = -1;
-                            for (int i = 0; i < dictionary.Count; i++)
-                            {
-                                SweEngGloss gloss = dictionary[i];
-                                if (gloss.word_swe == sweWordToDelete && gloss.word_eng == engWordToDelete)
-                                    index = i;
-                            }
-                            dictionary.RemoveAt(index);
-                            Console.WriteLine($"{sweWordToDelete}/{engWordToDelete} removed from the list");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Word not found in the list");
-                        }
+                        RemoveWordFromList(sweWordToDelete, engWordToDelete);
                     }
                 }
                 else if (command == "translate")
