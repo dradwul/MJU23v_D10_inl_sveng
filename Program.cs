@@ -145,7 +145,6 @@ namespace MJU23v_D10_inl_sveng
                 }
                 else if (command == "new")
                 {
-                    //FIXME: Felhantering och kontroll eventuella dubletter vid addering av nya ord
                     if (argument.Length == 3)
                     {
                         string sweWordToAdd = argument[1];
@@ -181,32 +180,52 @@ namespace MJU23v_D10_inl_sveng
                 }
                 else if (command == "delete") 
                 {
-                    //FIXME: Felhantering om man försöker ta bort ord som inte finns 
                     //TODO: En else if som tar två ord för att bara skriva 'delete {svenskt/engelskt ord}'
                     if (argument.Length == 3)
                     {
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++) {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == argument[1] && gloss.word_eng == argument[2])
-                                index = i;
+                        string sweWordToDelete = argument[1];
+                        string engWordToDelete = argument[2];
+
+                        if (IsWordAlreadyInList(sweWordToDelete, engWordToDelete))
+                        {
+                            int index = -1;
+                            for (int i = 0; i < dictionary.Count; i++)
+                            {
+                                SweEngGloss gloss = dictionary[i];
+                                if (gloss.word_swe == sweWordToDelete && gloss.word_eng == engWordToDelete)
+                                    index = i;
+                            }
+                            dictionary.RemoveAt(index);
+                            Console.WriteLine($"{sweWordToDelete}/{engWordToDelete} removed from the list");
                         }
-                        dictionary.RemoveAt(index);
+                        else
+                        {
+                            Console.WriteLine("Word not found in the list");
+                        }
                     }
                     else if (argument.Length == 1)
                     {
                         Console.Write("Write word in Swedish: ");
-                        string sweWord = Console.ReadLine();
+                        string sweWordToDelete = Console.ReadLine();
                         Console.Write("Write word in English: ");
-                        string engWord = Console.ReadLine();
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++)
+                        string engWordToDelete = Console.ReadLine();
+
+                        if (IsWordAlreadyInList(sweWordToDelete, engWordToDelete))
                         {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == sweWord && gloss.word_eng == engWord)
-                                index = i;
+                            int index = -1;
+                            for (int i = 0; i < dictionary.Count; i++)
+                            {
+                                SweEngGloss gloss = dictionary[i];
+                                if (gloss.word_swe == sweWordToDelete && gloss.word_eng == engWordToDelete)
+                                    index = i;
+                            }
+                            dictionary.RemoveAt(index);
+                            Console.WriteLine($"{sweWordToDelete}/{engWordToDelete} removed from the list");
                         }
-                        dictionary.RemoveAt(index);
+                        else
+                        {
+                            Console.WriteLine("Word not found in the list");
+                        }
                     }
                 }
                 else if (command == "translate")
