@@ -76,6 +76,17 @@ namespace MJU23v_D10_inl_sveng
                 return $"Error: {ex.Message}";
             }
         }
+        private static bool IsWordAlreadyInList(string sweWord, string engWord)
+        {
+            foreach (SweEngGloss gloss in dictionary)
+            {
+                if(gloss.word_swe == sweWord || gloss.word_eng == engWord)
+                {
+                    return true; //Returnering om ordet finns
+                }
+            }
+            return false; //Returnering om ordet inte finns
+        }
         public static void PrintHelp()
         {
             Console.WriteLine("Available commands:");
@@ -84,7 +95,7 @@ namespace MJU23v_D10_inl_sveng
             Console.WriteLine("'load'       -  ladda");
             Console.WriteLine("'list'       -  lista");
             Console.WriteLine("'translate'  -  översätt");
-            Console.WriteLine("'add'        -  lägg till ord");
+            Console.WriteLine("'new'        -  lägg till ord");
             Console.WriteLine("'delete'     -  ta bort ord");
             Console.WriteLine("'quit'       -  avsluta");
             Console.WriteLine("------------------------------");
@@ -137,7 +148,18 @@ namespace MJU23v_D10_inl_sveng
                     //FIXME: Felhantering och kontroll eventuella dubletter vid addering av nya ord
                     if (argument.Length == 3)
                     {
-                        dictionary.Add(new SweEngGloss(argument[1], argument[2]));
+                        string sweWordToAdd = argument[1];
+                        string engWordToAdd = argument[2];
+
+                        if (!IsWordAlreadyInList(sweWordToAdd, engWordToAdd))
+                        {
+                            dictionary.Add(new SweEngGloss(sweWordToAdd, engWordToAdd));
+                            Console.WriteLine($"{sweWordToAdd}/{engWordToAdd} added to the list");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Word already exists in the list");
+                        }
                     }
                     else if (argument.Length == 1)
                     {
@@ -145,7 +167,16 @@ namespace MJU23v_D10_inl_sveng
                         string sweWord = Console.ReadLine();
                         Console.Write("Write word in English: ");
                         string engWord = Console.ReadLine();
-                        dictionary.Add(new SweEngGloss(sweWord, engWord));
+
+                        if (!IsWordAlreadyInList(sweWord, engWord))
+                        {
+                            dictionary.Add(new SweEngGloss(sweWord, engWord));
+                            Console.WriteLine($"{sweWord}/{engWord} added to the list");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Word already exists in the list");
+                        }
                     }
                 }
                 else if (command == "delete") 
