@@ -105,7 +105,6 @@ namespace MJU23v_D10_inl_sveng
                     break;
                 }
                 else if (command == "load")
-                //TODO: Lägg in en verifiering för användaren att listan laddats
                 {
                     if (argument.Length == 2)
                     {
@@ -121,11 +120,17 @@ namespace MJU23v_D10_inl_sveng
                 }
                 else if (command == "list")
                 {
-                    foreach (SweEngGloss gloss in dictionary)
+                    if (dictionary.Count == 0)
                     {
-                        Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
+                        Console.WriteLine("No list loaded. Please load list");
                     }
-                    //TODO: Felmeddelande om ingen lista finns laddad
+                    else
+                    {
+                        foreach (SweEngGloss gloss in dictionary)
+                        {
+                            Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
+                        }
+                    }
                 }
                 else if (command == "new")
                 {
