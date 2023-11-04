@@ -44,19 +44,37 @@ namespace MJU23v_D10_inl_sveng
         }
         static string LoadFile(string fileToLoad)
         {
-            //FIXME: Felhantering vid ogiltig sökväg
-            using (StreamReader sr = new StreamReader(fileToLoad))
+            try
             {
-                dictionary = new List<SweEngGloss>(); // Empty it!
-                string line = sr.ReadLine();
-                while (line != null)
+                using (StreamReader sr = new StreamReader(fileToLoad))
                 {
-                    SweEngGloss gloss = new SweEngGloss(line);
-                    dictionary.Add(gloss);
-                    line = sr.ReadLine();
+                    dictionary = new List<SweEngGloss>(); // Empty it!
+                    string line = sr.ReadLine();
+                    while (line != null)
+                    {
+                        SweEngGloss gloss = new SweEngGloss(line);
+                        dictionary.Add(gloss);
+                        line = sr.ReadLine();
+                    }
                 }
+                Console.WriteLine($"{fileToLoad} has been loaded");
+                return $"{fileToLoad} has been loaded";
             }
-            return "File loaded";
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("File not found. Please provide a valid file path");
+                return "File not found. Please provide a valid file path";
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("return \"An I/O error occured while loading the file");
+                return "An I/O error occured while loading the file";
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return $"Error: {ex.Message}";
+            }
         }
         public static void PrintHelp()
         {
@@ -87,7 +105,6 @@ namespace MJU23v_D10_inl_sveng
                     break;
                 }
                 else if (command == "load")
-                //FIXME: Felhantering vid tom/ogiltig input
                 //TODO: Lägg in en verifiering för användaren att listan laddats
                 {
                     if (argument.Length == 2)
@@ -156,8 +173,7 @@ namespace MJU23v_D10_inl_sveng
                         dictionary.RemoveAt(index);
                     }
                 }
-                else if (command == "translate") 
-                    //FIXME: Felhantering vid ogiltig input. T.ex. ord som inte finns
+                else if (command == "translate")
                 {
                     if (argument.Length == 2)
                     {
